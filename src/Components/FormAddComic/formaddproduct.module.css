@@ -1,0 +1,150 @@
+.container{
+    width: 100vw;
+    margin-top: 10px;
+    position: relative;
+}
+
+.formAddProduct{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: #f1f1f1;
+    padding-top: 20px;
+
+}
+.box_img{
+    width:40%;
+}
+.input_img{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.input_img>input[type='file']{
+    display: none;
+}
+.label_input_img{
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.button_select_img{
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+}
+.button_select_img:hover{
+    color: #f15e2c    ;
+}
+.label_input_img:hover{
+    cursor: pointer;
+}
+.label_input_img>img{
+    max-width: 30%;
+}
+.preview_img{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.preview_img img{
+    max-width: 30%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+
+.box_input{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 15px;
+    padding-bottom: 50px;
+}
+
+.box_type , .box_text{
+    width: 100%;
+}
+.box_text{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+.title_input{
+    font-size: 19px;
+    font-weight: 600;
+}
+.box_radio, .box_text input[type='text'],input[type='number'] {
+    width: 90%;
+    max-width: 450px;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.box_text input[type='text'],input[type='number']{
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.box_radio label{
+    margin-right: 15px;
+}
+.box_text input[type='text']:focus-visible,input[type='number']:focus-visible {
+    outline: none;
+}
+.addProduct{
+    padding: 10px;
+    background-color: #555555;
+    color: white;
+    font-size: 19px;
+    max-width: 170px;
+
+}
+.addProduct:hover{
+    cursor: pointer;
+    color: #f15e2c;
+}
+.box_type{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.box_type>.title_input{
+    margin-bottom: 10px;
+}
+.box_type>select{
+    width: 25%;
+    max-width: 100px;
+    height: 35px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.box_type>select>option{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.input_amount{
+    width: 22% !important;
+    max-width: 92px !important;
+    height: 35px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1200px){
+    .formAddProduct{
+        width: 100%;
+    }
+    .label_input_img{
+        max-width: 100%;
+    }
+    .preview_img img{
+        max-width: 90%;
+    }
+    .addProduct{
+        font-size: 14px;
+        padding:5px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+}
