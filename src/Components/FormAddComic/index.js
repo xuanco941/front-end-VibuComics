@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import style from './formaddproduct.module.css'
 import icon_post_img from './img/camera.png'
@@ -7,51 +6,31 @@ import Loader from '../Loader'
 import MenuManagementAdmin from '../MenuManagementAdmin'
 import { useNavigate } from 'react-router-dom'
 
-const categorys = [
-    {
-        id: 1,
-        name: 'Giầy'
-    },
-    {
-        id: 2,
-        name: 'Áo'
-    },
-    {
-        id: 3,
-        name: 'Phụ kiện khác'
-    }
-]
 
-const allSize = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'];
 const FormAddComic = () => {
     const navigate = useNavigate();
 
     const [image, setImage] = useState([]);
-    const [nameProduct, setNameProduct] = useState('');
-    const [price, setPrice] = useState(1000);
-    const [sale, setSale] = useState(0);
-    const [description, setDescription] = useState('');
-    const [color, setColor] = useState('#ffffff');
-    const [checkedCategory, setCheckedCategory] = useState('Giầy');
-
-    const [size, setSize] = useState('36');
-    const [amount, setAmount] = useState(1);
+    const [tenTruyen, setTenTruyen] = useState('');
+    const [giaChap, setGiaChap] = useState(1000);
+    const [tenKhac, setTenKhac] = useState('');
+    const [moTa, setMoTa] = useState('');
+    const [theLoai, setTheLoai] = useState('');
+    const [tacGia, setTacGia] = useState('');
 
     function resetForm() {
         setImage([]);
-        setNameProduct('');
-        setPrice(1000);
-        setSale(0);
-        setDescription('');
-        setColor('#ffffff');
-        setCheckedCategory('Giầy');
-        setSize('36');
-        setAmount(1);
+        setTenTruyen('');
+        setGiaChap(1000);
+        setTenKhac('');
+        setMoTa('');
+        setTheLoai('');
+        setTacGia('');
     }
 
     const [notify, setNotify] = useState('none');
     const [loader, setLoader] = useState('none');
-    const [message, setMessage] = useState('Thêm thành công');
+    const [message, setMessage] = useState('Thêm truyện thành công.');
 
     function isFileImage(file) {
         return file && file['type'].split('/')[0] === 'image';
@@ -80,23 +59,22 @@ const FormAddComic = () => {
 
     const formSubmit = async (e) => {
         e.preventDefault();
-        if (nameProduct && description && price !== 0 && image.length > 0) {
+        if (tenTruyen && moTa && giaChap !== 0 && image.length > 0) {
             setLoader('block');
             let formData = new FormData();
-            formData.append('nameProduct', nameProduct);
-            formData.append('price', price);
-            formData.append('sale', sale);
-            formData.append('color', color);
-            formData.append('description', description);
-            formData.append('category', checkedCategory);
-            formData.append('size', size);
-            formData.append('amount', amount);
+            formData.append('tenTruyen', tenTruyen);
+            formData.append('moTa', moTa);
+            formData.append('giaChap', giaChap);
+            formData.append('tenKhac', tenKhac);
+            formData.append('theLoai', theLoai);
+            formData.append('tacGia', tacGia);
+           
 
             for (let i = 0; i < image.length; i++) {
                 formData.append('image[]', image[i], image[i].name)
             }
 
-            await fetch(process.env.REACT_APP_API_ENDPOINT + '/product/post-product', {
+            await fetch(process.env.REACT_APP_API_ENDPOINT + '/comic/add-comic', {
                 method: 'POST',
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
@@ -131,9 +109,9 @@ const FormAddComic = () => {
                             else{
                                 alert('Refresh Token gặp lỗi');
                                 localStorage.removeItem('accessTokenAdmin');
-                                navigate('/admin');                            }
+                                navigate('/');                            }
                         });
-                        await fetch(process.env.REACT_APP_API_ENDPOINT + '/product/post-product', {
+                        await fetch(process.env.REACT_APP_API_ENDPOINT + '/comic/add-comic', {
                             method: 'POST',
                             headers: {
                                 "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
@@ -142,6 +120,7 @@ const FormAddComic = () => {
                         })
                             .then(res => res.json())
                             .then(dataRes => {
+                                console.log(dataRes)
                                 if (dataRes.status === 'success') {
                                     resetForm();
                                     setMessage('Thêm thành công');
@@ -151,9 +130,9 @@ const FormAddComic = () => {
                                     }, 7000)
                                 }
                                 else {
-                                    alert('Token het han, moi ban dang nhap lai');
+                                    alert('Token hết hạn, mời bạn đăng nhập lại');
                                     localStorage.removeItem('accessTokenAdmin');
-                                    navigate('/admin');
+                                    navigate('/');
                                 }
                             }
                             )
@@ -183,7 +162,7 @@ const FormAddComic = () => {
                             <input onChange={handleOnChangeInputImg} id='id_img' name='image' placeholder="image" type='file' multiple />
                             <label className={style.label_input_img} htmlFor='id_img'>
                                 <img src={icon_post_img} alt='icon post img' />
-                                <div className={style.button_select_img}>Chọn ảnh</div>
+                                <div className={style.button_select_img}>Chọn ảnh bìa truyện</div>
                             </label>
                         </div>
                         <div className={style.preview_img}>
@@ -194,43 +173,24 @@ const FormAddComic = () => {
                     <div className={style.box_input}>
 
                         <div className={style.box_text}>
-                            <span className={style.title_input}>Tên sản phẩm</span>
-                            <input value={nameProduct} autoComplete='off' id='nameProduct' onChange={e => setNameProduct(e.target.value)} name='nameProduct' placeholder="nameProduct" type='text' />
+                            <span className={style.title_input}>*Tên truyện</span>
+                            <input value={tenTruyen} autoComplete='off' id='tenTruyen' onChange={e => setTenTruyen(e.target.value)} name='tenTruyen' placeholder="tenTruyen" type='text' />
+                            <span className={style.title_input}>Tên khác</span>
+                            <input value={tenKhac} autoComplete='off' id='tenKhac' onChange={e => setTenKhac(e.target.value)} name='tenKhac' placeholder="tenKhac" type='text' />
 
-                            <span className={style.title_input}>Phân loại</span>
-                            <div className={style.box_radio}>
+                            <span className={style.title_input}>*Mô tả</span>
+                            <input value={moTa} onChange={e => setMoTa(e.target.value)} name='moTa' placeholder="moTa" type='text' />
+                            <span className={style.title_input}>*Giá Chap (VNĐ)</span>
+                            <input value={giaChap} onChange={e => setGiaChap(e.target.value)} name='giaChap' placeholder="price" type='number' />
 
-                                {categorys.map(category => {
-                                    return <span key={category.id}>
-                                        <input checked={checkedCategory === category.name} onChange={e => setCheckedCategory(category.name)} placeholder={category.name} type='radio' id={`id${category.id}`} />
-                                        <label htmlFor={`id${category.id}`}>{category.name}</label>
-                                    </span>
-                                })}
-                            </div>
+                            <span className={style.title_input}>Thể loại</span>
+                            <input value={theLoai} onChange={e => setTheLoai(e.target.value)} name='theLoai' placeholder="theLoai" type='text' />
 
-
-                            <span className={style.title_input}>Giá (VNĐ)</span>
-                            <input value={price} onChange={e => setPrice(e.target.value)} name='price' placeholder="price" type='number' />
-                            <span className={style.title_input}>Giảm giá (%)</span>
-                            <input value={sale} onChange={e => setSale(e.target.value)} name='sale' min='0' max='100' placeholder="sale" type='number' />
-                            <span className={style.title_input}>Mô tả </span>
-                            <input value={description} onChange={e => setDescription(e.target.value)} name='description' placeholder="description" type='text' />
-
-
-                            <span className={style.title_input}>Màu sắc</span>
-                            <input onChange={e => setColor(e.target.value)} value={color} type='color' />
+                            <span className={style.title_input}>Tác giả</span>
+                            <input value={tacGia} onChange={e => setTacGia(e.target.value)} name='tacGia' placeholder="tacGia" type='text' />
 
                         </div>
 
-                        <div className={style.box_type}>
-                            <span className={style.title_input}>Kích cỡ & Số lượng</span>
-                            <select onChange={e => { setSize(e.target.value) }} defaultValue={size} required>
-                                {allSize.map((e, index) => {
-                                    return <option key={index} disabled={e === size} value={e}>{e}</option>
-                                })}
-                            </select>
-                            <input onChange={e => setAmount(e.target.value)} value={amount} className={style.input_amount} min='1' autoComplete='off' name='amount' placeholder="amount" type='number' />
-                        </div>
 
                         <button type='submit' className={style.addProduct}>Thêm sản phẩm</button>
 

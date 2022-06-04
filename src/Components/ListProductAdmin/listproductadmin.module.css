@@ -22,3 +22,12 @@ table, th, td {
     width: 30px;
     height: 30px;
 }
+.btn_delete{
+    width: 60px;
+    height: 40px;
+    background-color: brown;
+    color: white;
+}
+.btn_delete:hover{
+    cursor: pointer;
+}

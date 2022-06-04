@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import style from './listproductadmin.module.css'
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const ListProductAdmin = () => {
     const [products, setProducts] = useState([]);
@@ -81,8 +82,8 @@ const ListProductAdmin = () => {
                 <th>Tên khác</th>
                 <th>Tác giả</th>
                 <th>Trạng thái</th>
-                <th>Hành động</th>
                 <th>Danh sách chap</th>
+                <th>Hành động</th>
             </tr>
         </tbody>
 
@@ -103,9 +104,9 @@ const ListProductAdmin = () => {
                     <td>{e.tenKhac}</td>
                     <td>{e.tacGia}</td>
                     <td>{e.daHoanThanh === true ? 'Đã hoàn thành' : 'Chưa hoàn thành'}</td>
-                    <td><button onClick={elm => handleButtonXoa(e.id)}>Xóa</button>
+                    <td><Link to={`/get-all-chapters?comicId=${e.id}`}>Xem</Link></td>
+                    <td><button className={style.btn_delete} onClick={elm => handleButtonXoa(e.id)}>Xóa</button>
                     </td>
-                    <td>Xem</td>
                 </tr>
             </tbody>
 
