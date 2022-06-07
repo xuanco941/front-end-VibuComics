@@ -2,12 +2,10 @@ import MenuManagementAdmin from "../../Components/MenuManagementAdmin"
 import Header from "../../Components/Header"
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import clsx from "clsx";
-const GetAllChapters = () => {
+const AllChapters = () => {
     const [chapters, setChapters] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         function getChapters() {
@@ -28,19 +26,17 @@ const GetAllChapters = () => {
         <>
             <Header />
             <MenuManagementAdmin />
-            <>
-                <div>
-                    {chapters.map((e) => {
-                        let params = new URLSearchParams(window.location.search);
-                        let comicId = params.get('comicId');
-                        return <div className={clsx()}>
-                            <Link to={`/get-a-chapter?comicId=${comicId}&idChap=${e.idChap}`}>{e.tenChap}</Link>
-                            <button type="button">Xoa</button>
-                        </div>
-                    })}
-                </div>
-            </>
+            <div>
+                {chapters.map((e) => {
+                    let params = new URLSearchParams(window.location.search);
+                    let comicId = params.get('comicId');
+                    return <div className={clsx()}>
+                        <Link to={`/get-a-chapter?comicId=${comicId}&idChap=${e.idChap}`}>{e.tenChap}</Link>
+                        <button type="button">Xoa</button>
+                    </div>
+                })}
+            </div>
         </>
     )
 }
-export default GetAllChapters
+export default AllChapters

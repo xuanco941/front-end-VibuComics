@@ -101,7 +101,7 @@ const ListProductAdmin = () => {
                     <td>{e.moTa}</td>
                     <td>{e.tenKhac}</td>
                     <td>{e.tacGia}</td>
-                    <td><Link to={`/get-all-chapters?comicId=${e.id}`}>Xem</Link></td>
+                    <td><Link to={`/all-chapters?comicId=${e.id}`}>Xem</Link></td>
                     <td><button className={style.btn_delete} onClick={elm => handleButtonXoa(e.id)}>Xóa</button>
                     </td>
                 </tr>
