@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import style from './listproductadmin.module.css'
+import style from './listallcomics.module.css'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -91,12 +91,10 @@ const ListProductAdmin = () => {
 
             return <tbody key={e.id}>
                 <tr data-id={e.id} className={style.tr}>
-                    {/* <td className={style.box_img} >
-                        {e.image.map((img, index_img) => {
-                            return <img key={index_img} className={style.img} src={img} alt='img' />
-                        })}
-                    </td> */}
-                    <td>img</td>
+                    <td>
+                        <img className={style.img} src={e.linkAnhTruyen} alt='img'>
+                        </img>
+                    </td>
                     <td>{e.tenTruyen}</td>
                     <td>{e.theLoai}</td>
                     <td>{e.giaChap}</td>

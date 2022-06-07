@@ -1,5 +1,5 @@
 import MenuManagementAdmin from "../../Components/MenuManagementAdmin"
-import ListProductAdmin from "../../Components/ListProductAdmin"
+import ListAllComics from "../../Components/ListAllComics"
 import Header from "../../Components/Header"
 
 const AllComics = () => {
@@ -7,7 +7,7 @@ const AllComics = () => {
         <>
             <Header />
             <MenuManagementAdmin />
-            <ListProductAdmin />
+            <ListAllComics />
         </>
     )
 }
