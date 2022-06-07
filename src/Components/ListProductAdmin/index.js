@@ -82,7 +82,6 @@ const ListProductAdmin = () => {
                 <th>Mô tả</th>
                 <th>Tên khác</th>
                 <th>Tác giả</th>
-                <th>Trạng thái</th>
                 <th>Danh sách chap</th>
                 <th>Hành động</th>
             </tr>
@@ -104,7 +103,6 @@ const ListProductAdmin = () => {
                     <td>{e.moTa}</td>
                     <td>{e.tenKhac}</td>
                     <td>{e.tacGia}</td>
-                    <td>{e.daHoanThanh === true ? 'Đã hoàn thành' : 'Chưa hoàn thành'}</td>
                     <td><Link to={`/get-all-chapters?comicId=${e.id}`}>Xem</Link></td>
                     <td><button className={style.btn_delete} onClick={elm => handleButtonXoa(e.id)}>Xóa</button>
                     </td>
