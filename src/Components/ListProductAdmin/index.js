@@ -5,20 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const ListProductAdmin = () => {
-    const [products, setProducts] = useState([]);
+    const [comics, setComics] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        function getProduct() {
+        function getComics() {
             axios.get(process.env.REACT_APP_API_ENDPOINT + '/comic/get-all-comics').then(response => {
-                setProducts(response.data);
+                setComics(response.data);
             });
         }
 
-        getProduct();
+        getComics();
 
         return () => {
-            setProducts([]);
+            setComics([]);
         }
     }, [])
 
@@ -36,8 +36,9 @@ const ListProductAdmin = () => {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 if (data.status === 'success') {
-                    localStorage.setItem('accessTokenAdmin', data.accessTokenAdmin);
+                    localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
                 }
                 else {
                     alert(data.message);
@@ -65,7 +66,7 @@ const ListProductAdmin = () => {
                 navigate('/');
             }
             else {
-                setProducts(prev => prev.filter(elm => elm._id !== comicId));
+                setComics(prev => prev.filter(elm => elm.id !== comicId));
             }
         }
         );
@@ -87,7 +88,7 @@ const ListProductAdmin = () => {
             </tr>
         </tbody>
 
-        {products.length > 0 ? products.map(e => {
+        {comics.length > 0 ? comics.map(e => {
 
             return <tbody key={e.id}>
                 <tr data-id={e.id} className={style.tr}>

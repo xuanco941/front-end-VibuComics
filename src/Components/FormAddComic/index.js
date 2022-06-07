@@ -68,10 +68,10 @@ const FormAddComic = () => {
             formData.append('tenKhac', tenKhac);
             formData.append('theLoai', theLoai);
             formData.append('tacGia', tacGia);
-           
+
 
             for (let i = 0; i < image.length; i++) {
-                formData.append('image[]', image[i], image[i].name)
+                formData.append('image', image[i], image[i].name)
             }
 
             await fetch(process.env.REACT_APP_API_ENDPOINT + '/comic/add-comic', {
@@ -82,7 +82,7 @@ const FormAddComic = () => {
                 body: formData
             })
                 .then(res => res.json())
-                .then( async (dataRes) => {
+                .then(async (dataRes) => {
                     if (dataRes.status === 'success') {
                         resetForm();
                         setMessage('Thêm thành công');
@@ -92,25 +92,26 @@ const FormAddComic = () => {
                         }, 7000)
                     }
                     else {
-                        await fetch(process.env.REACT_APP_API_ENDPOINT+'/admin/refresh-token',{
+                        await fetch(process.env.REACT_APP_API_ENDPOINT + '/admin/refresh-token', {
                             method: "POST",
-                            headers:{
+                            headers: {
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
                                 refreshTokenAdmin: localStorage.getItem('refreshTokenAdmin')
                             })
                         })
-                        .then(res => res.json())
-                        .then(data => {
-                            if(data.status === 'success'){
-                                localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
-                            }
-                            else{
-                                alert('Refresh Token gặp lỗi');
-                                localStorage.removeItem('accessTokenAdmin');
-                                navigate('/');                            }
-                        });
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
+                                }
+                                else {
+                                    alert('Refresh Token gặp lỗi');
+                                    localStorage.removeItem('accessTokenAdmin');
+                                    navigate('/');
+                                }
+                            });
                         await fetch(process.env.REACT_APP_API_ENDPOINT + '/comic/add-comic', {
                             method: 'POST',
                             headers: {
@@ -159,7 +160,7 @@ const FormAddComic = () => {
                 <form onSubmit={e => formSubmit(e)} className={style.formAddProduct} method='POST'>
                     <div className={style.box_img}>
                         <div className={style.input_img}>
-                            <input onChange={handleOnChangeInputImg} id='id_img' name='image' placeholder="image" type='file' multiple />
+                            <input onChange={handleOnChangeInputImg} id='id_img' name='image' type='file' multiple />
                             <label className={style.label_input_img} htmlFor='id_img'>
                                 <img src={icon_post_img} alt='icon post img' />
                                 <div className={style.button_select_img}>Chọn ảnh bìa truyện</div>
@@ -174,20 +175,20 @@ const FormAddComic = () => {
 
                         <div className={style.box_text}>
                             <span className={style.title_input}>*Tên truyện</span>
-                            <input value={tenTruyen} autoComplete='off' id='tenTruyen' onChange={e => setTenTruyen(e.target.value)} name='tenTruyen' placeholder="tenTruyen" type='text' />
+                            <input value={tenTruyen} autoComplete='off' id='tenTruyen' onChange={e => setTenTruyen(e.target.value)} name='tenTruyen' type='text' />
                             <span className={style.title_input}>Tên khác</span>
-                            <input value={tenKhac} autoComplete='off' id='tenKhac' onChange={e => setTenKhac(e.target.value)} name='tenKhac' placeholder="tenKhac" type='text' />
+                            <input value={tenKhac} autoComplete='off' id='tenKhac' onChange={e => setTenKhac(e.target.value)} name='tenKhac' type='text' />
 
                             <span className={style.title_input}>*Mô tả</span>
-                            <input value={moTa} onChange={e => setMoTa(e.target.value)} name='moTa' placeholder="moTa" type='text' />
+                            <input value={moTa} onChange={e => setMoTa(e.target.value)} name='moTa' type='text' />
                             <span className={style.title_input}>*Giá Chap (VNĐ)</span>
-                            <input value={giaChap} onChange={e => setGiaChap(e.target.value)} name='giaChap' placeholder="price" type='number' />
+                            <input value={giaChap} onChange={e => setGiaChap(e.target.value)} name='giaChap' type='number' />
 
                             <span className={style.title_input}>Thể loại</span>
-                            <input value={theLoai} onChange={e => setTheLoai(e.target.value)} name='theLoai' placeholder="theLoai" type='text' />
+                            <input value={theLoai} onChange={e => setTheLoai(e.target.value)} name='theLoai' type='text' />
 
                             <span className={style.title_input}>Tác giả</span>
-                            <input value={tacGia} onChange={e => setTacGia(e.target.value)} name='tacGia' placeholder="tacGia" type='text' />
+                            <input value={tacGia} onChange={e => setTacGia(e.target.value)} name='tacGia' type='text' />
 
                         </div>
 
