@@ -1,0 +1,9 @@
+.box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.box_content{
+    width: 65%;
+
+}
