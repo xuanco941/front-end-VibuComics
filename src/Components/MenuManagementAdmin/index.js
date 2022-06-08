@@ -15,8 +15,8 @@ const MenuManagementAdmin = () => {
         <div className={style.menu}>
             <img className={style.img} src={settingimg} alt='img' />
             <div className={style.box_item}>
-                <Link to='/add-comic' className={style.item}>Thêm sản phẩm</Link>
-                <Link to='/all-comics' className={style.item}>Xem sản phẩm</Link>
+                <Link to='/add-comic' className={style.item}>Thêm truyện</Link>
+                <Link to='/all-comics' className={style.item}>Danh sách truyện</Link>
                 <div onClick={handleSignOut} className={style.item}>Đăng xuất</div>
             </div>
         </div>

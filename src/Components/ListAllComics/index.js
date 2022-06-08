@@ -25,51 +25,54 @@ const ListProductAdmin = () => {
 
     async function handleButtonXoa(comicId) {
 
-        await fetch(process.env.REACT_APP_API_ENDPOINT + '/admin/refresh-token', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                refreshTokenAdmin: localStorage.getItem('refreshTokenAdmin')
+        if (window.confirm('Bạn có chắc chắn muốn xóa truyện này?')) {
+
+            await fetch(process.env.REACT_APP_API_ENDPOINT + '/admin/refresh-token', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    refreshTokenAdmin: localStorage.getItem('refreshTokenAdmin')
+                })
             })
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.status === 'success') {
-                    localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
-                }
-                else {
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
+                    }
+                    else {
+                        alert(data.message);
+                        localStorage.removeItem('accessTokenAdmin');
+                        localStorage.removeItem('refreshTokenAdmin');
+                        navigate('/');
+                    }
+                });
+
+
+
+            await fetch(process.env.REACT_APP_API_ENDPOINT + '/comic/delete-comic', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
+                },
+                body: JSON.stringify({
+                    comicId
+                })
+            }).then(res => res.json()).then(async (data) => {
+                if (data.status === 'error') {
                     alert(data.message);
                     localStorage.removeItem('accessTokenAdmin');
-                    localStorage.removeItem('refreshTokenAdmin');
                     navigate('/');
                 }
-            });
-
-
-
-        await fetch(process.env.REACT_APP_API_ENDPOINT + '/comic/delete-comic', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
-            },
-            body: JSON.stringify({
-                comicId
-            })
-        }).then(res => res.json()).then(async (data) => {
-            if (data.status === 'error') {
-                alert(data.message);
-                localStorage.removeItem('accessTokenAdmin');
-                navigate('/');
+                else {
+                    setComics(prev => prev.filter(elm => elm.id !== comicId));
+                }
             }
-            else {
-                setComics(prev => prev.filter(elm => elm.id !== comicId));
-            }
+            );
         }
-        );
     }
 
     return <table className={style.table}>

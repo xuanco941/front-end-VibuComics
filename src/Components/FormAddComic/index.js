@@ -193,7 +193,7 @@ const FormAddComic = () => {
                         </div>
 
 
-                        <button type='submit' className={style.addProduct}>Thêm sản phẩm</button>
+                        <button type='submit' className={style.addProduct}>Thêm truyện</button>
 
                     </div>
 
