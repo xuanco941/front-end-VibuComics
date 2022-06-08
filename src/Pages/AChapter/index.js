@@ -8,7 +8,7 @@ import style from "./allchapters.module.css";
 import icon_post_img from './img/camera.png';
 import Toast from '../../Components/Toast';
 
-const AllChapters = () => {
+const AChapter = () => {
     const [chapters, setChapters] = useState([]);
     const [modal, setModal] = useState(false);
     const [modalBlock, setModalBlock] = useState(false);
@@ -233,4 +233,4 @@ const AllChapters = () => {
         </>
     )
 }
-export default AllChapters
+export default AChapter
