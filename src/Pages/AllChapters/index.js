@@ -1,11 +1,12 @@
 import MenuManagementAdmin from "../../Components/MenuManagementAdmin"
 import Header from "../../Components/Header"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import clsx from "clsx";
 import style from "./allchapters.module.css";
-import icon_post_img from './img/camera.png'
+import icon_post_img from './img/camera.png';
+import Toast from '../../Components/Toast';
 
 const AllChapters = () => {
     const [chapters, setChapters] = useState([]);
@@ -13,8 +14,11 @@ const AllChapters = () => {
     const [image, setImage] = useState([]);
     const [tenChap, setTenChap] = useState('');
 
+    const [notify, setNotify] = useState('none');
+    const [message, setMessage] = useState('Thêm chap thành công.');
 
-
+    const navigate = useNavigate();
+    //get all chap
     useEffect(() => {
         function getChapters() {
             let params = new URLSearchParams(window.location.search);
@@ -55,18 +59,119 @@ const AllChapters = () => {
         }
     }, [image])
 
-
+    //clean form
     useEffect(() => {
         return () => resetForm();
     }, [])
 
 
-    
+    const AddChap = async (e) => {
+        if (tenChap && image.length > 0) {
+
+            let params = new URLSearchParams(window.location.search);
+            let comicId = params.get('comicId');
+            let tenTruyen = params.get('tenTruyen');
+
+            let formData = new FormData();
+            formData.append('tenChap', tenChap);
+            formData.append('comicId', comicId);
+            formData.append('tenTruyen', tenTruyen);
+
+            for (let i = 0; i < image.length; i++) {
+                formData.append('image', image[i], image[i].name)
+            }
+
+
+
+            await fetch(process.env.REACT_APP_API_ENDPOINT + '/chapter/add-chapter', {
+                method: 'POST',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
+                },
+                body: formData
+            })
+                .then(res => res.json())
+                .then(async (dataRes) => {
+                    if (dataRes.status === 'success') {
+                        resetForm();
+                        setMessage('Thêm thành công');
+                        setNotify('block');
+                        setTimeout(() => {
+                            setNotify('none');
+                        }, 7000)
+                    }
+                    else {
+                        await fetch(process.env.REACT_APP_API_ENDPOINT + '/admin/refresh-token', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                refreshTokenAdmin: localStorage.getItem('refreshTokenAdmin')
+                            })
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
+                                }
+                                else {
+                                    alert('Refresh Token gặp lỗi');
+                                    localStorage.removeItem('accessTokenAdmin');
+                                    navigate('/');
+                                }
+                            });
+                        await fetch(process.env.REACT_APP_API_ENDPOINT + '/chapter/add-chapter', {
+                            method: 'POST',
+                            headers: {
+                                "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
+                            },
+                            body: formData
+                        })
+                            .then(res => res.json())
+                            .then(dataRes => {
+                                console.log(dataRes)
+                                if (dataRes.status === 'success') {
+                                    resetForm();
+                                    setMessage('Thêm thành công');
+                                    setNotify('block');
+                                    setTimeout(() => {
+                                        setNotify('none');
+                                    }, 7000)
+                                }
+                                else {
+                                    alert('Token hết hạn, mời bạn đăng nhập lại');
+                                    localStorage.removeItem('accessTokenAdmin');
+                                    navigate('/');
+                                }
+                            }
+                            )
+
+                    }
+                })
+
+
+
+
+
+
+
+
+
+        }
+        else {
+            alert('Chưa điền đủ thông tin');
+        }
+
+    }
+
+
 
 
 
     return (
         <>
+            <Toast notify={notify} message={message} />
             <Header />
             <MenuManagementAdmin />
             <div className={clsx(style.btn_add_chap)}>
@@ -75,10 +180,10 @@ const AllChapters = () => {
             <div className={clsx(style.box)}>
                 <div className={clsx(style.box_content)}>
                     {chapters.length === 0 ? <h1>Chưa có chap nào</h1> : <></>}
-                    {chapters.map((e) => {
+                    {chapters.map((e,index) => {
                         let params = new URLSearchParams(window.location.search);
                         let comicId = params.get('comicId');
-                        return <div key={e.idChap} className={clsx(style.box_item)}>
+                        return <div key={index} className={clsx(style.box_item)}>
                             <Link className={clsx(style.link_chap)} to={`/get-a-chapter?comicId=${comicId}&idChap=${e.idChap}`}>{e.tenChap}</Link>
                             <button className={clsx(style.btn_xoa)} type="button">Xóa</button>
                         </div>
@@ -91,7 +196,7 @@ const AllChapters = () => {
             {modal === true ?
                 <div onClick={() => setModal(!modal)} className={clsx(style.modal)}>
                     <div onClick={(e) => e.stopPropagation()} className={clsx(style.modal_content)}>
-                        <div style={{ marginTop: '7px'}}>
+                        <div style={{ marginTop: '7px' }}>
                             <input className={clsx(style.inputTenChap)} name="tenChap" value={tenChap} onChange={e => setTenChap(e.target.value)} type='text' placeholder="Tên chap" />
                         </div>
 
@@ -112,7 +217,7 @@ const AllChapters = () => {
                         <div className={clsx(style.separate)}></div>
 
                         <div>
-                            <button className={clsx(style.addProduct)} type="button">Thêm chap</button>
+                            <button onClick={AddChap} className={clsx(style.addProduct)} type="button">Thêm chap</button>
                         </div>
                     </div>
                 </div>
