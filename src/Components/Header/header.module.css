@@ -2,7 +2,10 @@
     width: 100vw;
     text-align: center;
     text-decoration: none;
+    margin-bottom: 50px;
+
 }
 .header a {
     text-decoration: none;
+    font-size: 23px;
 }

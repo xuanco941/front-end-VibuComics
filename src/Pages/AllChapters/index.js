@@ -65,6 +65,15 @@ const AllChapters = () => {
         return () => resetForm();
     }, [])
 
+    //load chap
+    function loadChapters() {
+        let params = new URLSearchParams(window.location.search);
+        let comicId = params.get('comicId');
+        axios.get(process.env.REACT_APP_API_ENDPOINT + `/chapter/get-all-chapters?comicId=${comicId}`).then(response => {
+            setChapters(response.data);
+        });
+    }
+
 
     const AddChap = async (e) => {
         if (tenChap && image.length > 0) {
@@ -156,10 +165,7 @@ const AllChapters = () => {
 
 
             setModalBlock(false);
-
-
-
-
+            loadChapters();
 
 
         }
@@ -169,6 +175,60 @@ const AllChapters = () => {
 
     }
 
+    const handleOnClickBtnXoa = async (tenChap) => {
+        let params = new URLSearchParams(window.location.search);
+        let comicId = params.get('comicId');
+
+        if (window.confirm('Bạn có chắc chắn muốn xóa chapter này?')) {
+
+            await fetch(process.env.REACT_APP_API_ENDPOINT + '/admin/refresh-token', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    refreshTokenAdmin: localStorage.getItem('refreshTokenAdmin')
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        localStorage.setItem('accessTokenAdmin', data.data.accessTokenAdmin);
+                    }
+                    else {
+                        alert(data.message);
+                        localStorage.removeItem('accessTokenAdmin');
+                        localStorage.removeItem('refreshTokenAdmin');
+                        navigate('/');
+                    }
+                });
+
+
+
+            await fetch(process.env.REACT_APP_API_ENDPOINT + '/chapter/delete-chapter', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem('accessTokenAdmin')
+                },
+                body: JSON.stringify({
+                    comicId,
+                    tenChap
+                })
+            }).then(res => res.json()).then(async (data) => {
+                if (data.status === 'error') {
+                    alert(data.message);
+                    localStorage.removeItem('accessTokenAdmin');
+                    navigate('/');
+                }
+                else {
+                    setChapters(prev => prev.filter(elm => elm.tenChap !== tenChap));
+                }
+            }
+            );
+        }
+    }
 
 
 
@@ -183,13 +243,13 @@ const AllChapters = () => {
             </div>
             <div className={clsx(style.box)}>
                 <div className={clsx(style.box_content)}>
-                    {chapters.length === 0 ? <h1>Chưa có chap nào</h1> : <></>}
+                    {chapters.length === 0 ? <h1 className={clsx(style.noChap)}>Chưa có chap nào</h1> : <></>}
                     {chapters.map((e, index) => {
                         let params = new URLSearchParams(window.location.search);
                         let comicId = params.get('comicId');
                         return <div key={index} className={clsx(style.box_item)}>
-                            <Link className={clsx(style.link_chap)} to={`/get-a-chapter?comicId=${comicId}&idChap=${e.idChap}`}>{e.tenChap}</Link>
-                            <button className={clsx(style.btn_xoa)} type="button">Xóa</button>
+                            <Link className={clsx(style.link_chap)} to={`/get-a-chapter?comicId=${comicId}&tenChap=${e.tenChap}`}>{e.tenChap}</Link>
+                            <button onClick={() => handleOnClickBtnXoa(e.tenChap)} className={clsx(style.btn_xoa)} type="button">Xóa</button>
                         </div>
                     })}
 
