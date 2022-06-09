@@ -40,6 +40,7 @@ const AChapter = () => {
             <MenuManagementAdmin />
             <div className={clsx(style.box)}>
                 <div className={clsx(style.box_content)}>
+                    <h2>{aChapter.tenChap}</h2>
                     {aChapter.length !== 0 ? LoadIMG() : <h1 style={{ width: '100%', textAlign: 'center' }}>Chưa có ảnh nào</h1>}
                 </div>
             </div>
