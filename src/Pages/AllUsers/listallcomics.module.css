@@ -1,0 +1,33 @@
+.table{
+    width: 94vw;
+    text-align: center;
+}
+table, th, td {
+    border: 1px solid;
+}
+.box_img{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 100px;
+    justify-content:space-around;
+}
+.img{
+    width: 50%;
+}
+.tr td{
+    text-align: center;
+}
+.color{
+    width: 30px;
+    height: 30px;
+}
+.btn_delete{
+    width: 60px;
+    height: 40px;
+    background-color: brown;
+    color: white;
+}
+.btn_delete:hover{
+    cursor: pointer;
+}
