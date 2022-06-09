@@ -72,3 +72,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 FILE .env có REACT_APP_API_ENDPOINT là địa chỉ kết nối api
+
+REACT_APP_API_ENDPOINT=http://localhost:5001
