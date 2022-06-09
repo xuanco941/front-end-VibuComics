@@ -4,6 +4,12 @@
     justify-content: center;
 }
 .box_content{
-    width: 65%;
-
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.box_content > img{
+    width: 100%;
 }

@@ -29,8 +29,8 @@ const AChapter = () => {
     console.log(aChapter)
 
     const LoadIMG = () => {
-        aChapter.links.map((e, index) => {
-            return <div alt="img" key={index} src={e}> </div>
+        return aChapter.links.map((e, index) => {
+            return <img alt="img" key={index} src={e} />
         })
     }
 
@@ -39,9 +39,8 @@ const AChapter = () => {
             <Header />
             <MenuManagementAdmin />
             <div className={clsx(style.box)}>
-            {aChapter.length !== 0 ? LoadIMG : <h1 style={{ width: '100%', textAlign: 'center' }}>Chưa có ảnh nào</h1>}
-
                 <div className={clsx(style.box_content)}>
+                    {aChapter.length !== 0 ? LoadIMG() : <h1 style={{ width: '100%', textAlign: 'center' }}>Chưa có ảnh nào</h1>}
                 </div>
             </div>
 
