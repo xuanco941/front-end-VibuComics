@@ -2,7 +2,7 @@ import MenuManagementAdmin from "../../Components/MenuManagementAdmin"
 import Header from "../../Components/Header"
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import style from './listallcomics.module.css'
+import style from './listallusers.module.css'
 
 const AllUsers = () => {
 

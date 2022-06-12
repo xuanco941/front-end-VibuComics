@@ -13,7 +13,7 @@
 
 .box_item {
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
     align-items: center;
     width: 32%;
     height: 50px;
@@ -33,7 +33,8 @@
 .link_chap:hover {
     color: white;
 }
-.noChap{
+
+.noChap {
     text-align: center;
     width: 100%;
 }
@@ -202,6 +203,8 @@
 .box_img {
     margin-top: 35px;
     margin-bottom: 35px;
+    max-height: 250px;
+    overflow: auto;
 }
 
 
